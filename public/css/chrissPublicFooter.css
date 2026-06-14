@@ -1,0 +1,85 @@
+.footer-wrapper {
+    background: #ffffff;
+    border-top: 1px solid #e2e6ef;
+    padding: 0.72rem 1.75rem;
+    position: fixed;
+    bottom: 0;
+    left: var(--sidebar-width, 0);
+    width: calc(100% - var(--sidebar-width, 0px));
+    z-index: 1035;
+    box-shadow: 0 -2px 12px rgba(15, 23, 42, 0.04);
+    transition: left 0.25s ease, width 0.25s ease;
+}
+
+body.sidebar-collapsed .footer-wrapper {
+    left: var(--sidebar-collapsed-width, 0);
+    width: calc(100% - var(--sidebar-collapsed-width, 0px));
+}
+
+.footer-container {
+    max-width: none;
+    margin: 0 auto;
+}
+
+.footer-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    color: #6b7280;
+    font-family: "Manrope", "Segoe UI", sans-serif;
+    font-size: 0.72rem;
+    text-align: center;
+}
+
+.footer-school-name {
+    color: #4f46e5;
+    font-weight: 700;
+}
+
+.footer-center {
+    max-width: 420px;
+}
+
+.footer-credit {
+    white-space: nowrap;
+}
+
+.footer-nav-slim {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.footer-nav-slim a {
+    color: #516d80;
+    text-decoration: none;
+    transition: color 0.22s ease;
+}
+
+.footer-nav-slim a:hover {
+    color: #0d6efd;
+}
+
+.footer-dot {
+    color: rgba(16, 152, 212, 0.3);
+    font-weight: 800;
+}
+
+.footer-dev-link {
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .footer-wrapper {
+        left: 0;
+        width: 100%;
+        padding: 0.7rem 1rem;
+    }
+
+    .footer-line {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+}
