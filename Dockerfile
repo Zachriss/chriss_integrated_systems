@@ -32,6 +32,9 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
+# Remove .env file - Render injects env vars at runtime
+RUN rm -f .env
+
 # Install frontend dependencies and build assets
 RUN npm install
 RUN npm run build
