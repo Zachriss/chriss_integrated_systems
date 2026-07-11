@@ -27,27 +27,26 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy Laravel project
+# Copy Laravel project (including storage/certs/aiven-ca.pem)
 COPY . .
 
-# Install PHP dependencies
+# Remove local .env - Render injects its own env vars at runtime.
+# Leaving .env in the image can cause Dotenv to override Render's env vars.
+RUN rm -f .env
+
+# Install PHP dependencies (no dev, optimize autoloader)
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Generate APP_KEY during build
-RUN php artisan key:generate --force --no-interaction
-
 # Install frontend dependencies and build assets
-RUN npm install
-RUN npm run build
+RUN npm install && npm run build
 
-# Append Aiven CA certificate to system bundle so SSL connection works
-RUN cat storage/certs/aiven-ca.pem >> /etc/ssl/certs/ca-certificates.crt
-
-# Laravel writable folders
+# Set Laravel writable folders
 RUN chmod -R 775 storage bootstrap/cache
 
 # Render uses port 10000
 EXPOSE 10000
 
-# Start Laravel - clear stale config, then serve
-CMD php artisan config:clear && php artisan serve --host=0.0.0.0 --port=10000
+# Start Laravel - environment variables are injected by Render at runtime.
+# optimize:clear clears all caches (config, route, view, event, etc.)
+CMD php artisan optimize:clear && \
+    php artisan serve --host=0.0.0.0 --port=10000

@@ -4,6 +4,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\PublicHomeController;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\PublicServiceController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
@@ -54,3 +55,30 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
 });
 
 Route::get('/e-learning', fn () => redirect()->route('login'))->name('e-learning');
+
+// Diagnostic route - REMOVE after debugging
+Route::get('/db-test', function () {
+    try {
+        DB::connection()->getPdo();
+        return [
+            'connected' => true,
+            'host' => env('DB_HOST'),
+            'port' => env('DB_PORT'),
+            'database' => env('DB_DATABASE'),
+            'username' => env('DB_USERNAME'),
+            'ssl_ca' => env('MYSQL_ATTR_SSL_CA'),
+            'ssl_verify' => env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT'),
+        ];
+    } catch (\Exception $e) {
+        return [
+            'connected' => false,
+            'message' => $e->getMessage(),
+            'host' => env('DB_HOST'),
+            'port' => env('DB_PORT'),
+            'database' => env('DB_DATABASE'),
+            'username' => env('DB_USERNAME'),
+            'ssl_ca' => env('MYSQL_ATTR_SSL_CA'),
+            'ssl_verify' => env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT'),
+        ];
+    }
+});
