@@ -116,7 +116,7 @@
   transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-#sidebar .nav-link .bi {
+#sidebar .nav-link > .bi {
   width: 22px;
   min-width: 22px;
   text-align: center;
@@ -131,7 +131,7 @@
   transform: translateX(3px);
 }
 
-#sidebar .nav-link:hover .bi {
+#sidebar .nav-link:hover > .bi {
   color: var(--sidebar-active);
 }
 
@@ -141,7 +141,7 @@
   box-shadow: 0 4px 12px rgba(113, 91, 200, 0.3);
 }
 
-#sidebar .nav-link.active .bi {
+#sidebar .nav-link.active > .bi {
   color: #ffffff;
 }
 
@@ -154,15 +154,17 @@
   cursor: pointer;
 }
 
-.nav-link-toggle .submenu-arrow {
-  font-size: 0.7rem;
+.nav-link-toggle > .submenu-arrow {
+  font-size: 0.65rem !important;
   transition: transform 0.25s ease;
-  min-width: 14px;
-  width: 14px;
+  min-width: 12px;
+  width: 12px;
   text-align: center;
+  line-height: 1;
+  color: var(--sidebar-muted) !important;
 }
 
-.nav-link-toggle[aria-expanded="true"] .submenu-arrow {
+.nav-link-toggle[aria-expanded="true"] > .submenu-arrow {
   transform: rotate(180deg);
 }
 
@@ -207,8 +209,9 @@
   color: var(--sidebar-active) !important;
 }
 
-.submenu-link.view-all-link .bi {
-  font-size: 0.8rem;
+.submenu-link.view-all-link > .bi,
+.submenu-link > .bi {
+  font-size: 0.75rem !important;
   min-width: 16px;
   color: var(--sidebar-active) !important;
 }
@@ -341,7 +344,7 @@ body.sidebar-collapsed .submenu-collapse {
   background: #fff1f2;
 }
 
-.chriss-sidebar-logout .bi {
+.chriss-sidebar-logout > .bi {
   min-width: 22px;
   text-align: center;
 }
@@ -375,8 +378,8 @@ body.sidebar-collapsed #sidebar .chriss-sidebar-logout {
   gap: 0;
 }
 
-body.sidebar-collapsed #sidebar .nav-link .bi,
-body.sidebar-collapsed #sidebar .chriss-sidebar-logout .bi {
+body.sidebar-collapsed #sidebar .nav-link > .bi,
+body.sidebar-collapsed #sidebar .chriss-sidebar-logout > .bi {
   font-size: 1.2rem;
 }
 
@@ -455,4 +458,57 @@ body.sidebar-collapsed #sidebar .sidebar-section {
   #sidebar {
     display: none;
   }
+}
+
+/* ==========================================
+   Global Icon Sizing Fixes for Chevrons & Arrows
+   ========================================== */
+
+/* Fix chevron icons that inherit large font sizes from parent elements */
+i.bi.bi-chevron-down,
+i.bi.bi-chevron-right,
+i.bi.bi-chevron-left,
+i.bi.bi-chevron-up,
+i[class*="bi-chevron"] {
+  font-size: 0.7rem !important;
+  line-height: 1;
+}
+
+/* Fix arrow icons that inherit large font sizes from parent elements */
+i.bi.bi-arrow-left,
+i.bi.bi-arrow-right,
+i.bi.bi-arrow-up,
+i.bi.bi-arrow-down,
+i.bi.bi-arrow-repeat,
+i.bi.bi-arrow-clockwise,
+i.bi.bi-arrow-counterclockwise,
+i.bi.bi-arrow-up-right,
+i.bi.bi-arrow-left-right,
+i[class*="bi-arrow-"] {
+  font-size: 0.75rem !important;
+  line-height: 1;
+}
+
+/* Override for icons in buttons to respect button context */
+.btn i.bi.bi-arrow-left,
+.btn i.bi.bi-arrow-right,
+.btn i[class*="bi-arrow-"],
+.btn i[class*="bi-chevron"] {
+  font-size: inherit !important;
+}
+
+/* Override for large display icons (stat cards, feature icons) - keep them large */
+i.bi.bi-arrow-repeat.display-1,
+i.bi.bi-arrow-repeat.display-2,
+i.bi.bi-arrow-repeat.display-3,
+i.bi.bi-arrow-repeat.display-4,
+i.bi.bi-arrow-left-right.display-1,
+i.bi.bi-arrow-left-right.display-2,
+i.bi.bi-arrow-left-right.display-3,
+i.bi.bi-arrow-left-right.display-4,
+i.bi.display-1[class*="bi-"],
+i.bi.display-2[class*="bi-"],
+i.bi.display-3[class*="bi-"],
+i.bi.display-4[class*="bi-"] {
+  font-size: inherit !important;
 }

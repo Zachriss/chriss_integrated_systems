@@ -1,3 +1,41 @@
+/* ==========================================
+   Global Icon Sizing Fixes for Chevrons & Arrows
+   Apply globally to fix oversized icons across the system
+   ========================================== */
+i.bi.bi-chevron-down,
+i.bi.bi-chevron-right,
+i.bi.bi-chevron-left,
+i.bi.bi-chevron-up,
+i[class*="bi-chevron"] {
+  font-size: 0.7rem !important;
+  line-height: 1;
+}
+i.bi.bi-arrow-left,
+i.bi.bi-arrow-right,
+i.bi.bi-arrow-up,
+i.bi.bi-arrow-down,
+i.bi.bi-arrow-repeat,
+i.bi.bi-arrow-clockwise,
+i.bi.bi-arrow-counterclockwise,
+i.bi.bi-arrow-up-right,
+i.bi.bi-arrow-left-right,
+i[class*="bi-arrow-"] {
+  font-size: 0.75rem !important;
+  line-height: 1;
+}
+.btn i.bi.bi-arrow-left,
+.btn i.bi.bi-arrow-right,
+.btn i[class*="bi-arrow-"],
+.btn i[class*="bi-chevron"] {
+  font-size: inherit !important;
+}
+i.bi.display-1[class*="bi-"],
+i.bi.display-2[class*="bi-"],
+i.bi.display-3[class*="bi-"],
+i.bi.display-4[class*="bi-"] {
+  font-size: inherit !important;
+}
+
 :root {
     /* Primary brand blues */
     --color-primary-500: #3b82f6;

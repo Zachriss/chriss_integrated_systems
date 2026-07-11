@@ -48,28 +48,41 @@ Route::middleware(['auth', 'super_admin'])->prefix('super-admin')->name('super-a
         Route::get('/tracking', [SuperAdminController::class, 'activityTracking'])->name('tracking');
     });
 
-    // Cash Point Setup (Legacy)
-    Route::prefix('cash-points')->name('cash-points.')->group(function () {
-        Route::get('/accounts', [SuperAdminController::class, 'cashPointAccounts'])->name('accounts');
-        Route::get('/opening-balance', [SuperAdminController::class, 'openingBalanceSetup'])->name('opening-balance');
-        Route::get('/closing-reports', [SuperAdminController::class, 'closingBalanceReports'])->name('closing-reports');
-        Route::get('/categories', [SuperAdminController::class, 'transactionCategories'])->name('categories');
-    });
-
-    // New Cash Point Management Module
+    // Cash Point Management Module (New Architecture)
     Route::prefix('cashpoint')->name('cashpoint.')->group(function () {
-        Route::get('/dashboard', [\App\Http\Controllers\SuperAdmin\SuperAdminCashpointController::class, 'index'])->name('dashboard');
-        Route::get('/sessions', [\App\Http\Controllers\SuperAdmin\SuperAdminCashpointController::class, 'allSessions'])->name('sessions');
-        Route::get('/sessions-data', [\App\Http\Controllers\SuperAdmin\SuperAdminCashpointController::class, 'getSessionsData'])->name('sessions.data');
-        Route::get('/sessions/{session}', [\App\Http\Controllers\SuperAdmin\SuperAdminCashpointController::class, 'show'])->name('sessions.show');
-        Route::post('/sessions/{session}/reopen', [\App\Http\Controllers\SuperAdmin\SuperAdminCashpointController::class, 'reopenSession'])->name('sessions.reopen');
-        Route::post('/sessions/{session}/correct', [\App\Http\Controllers\SuperAdmin\SuperAdminCashpointController::class, 'correctSession'])->name('sessions.correct');
-        Route::post('/staff/{staff}/reset', [\App\Http\Controllers\SuperAdmin\SuperAdminCashpointController::class, 'resetBalances'])->name('staff.reset');
-        Route::get('/providers', [\App\Http\Controllers\SuperAdmin\SuperAdminCashpointController::class, 'providers'])->name('providers');
-        Route::post('/providers', [\App\Http\Controllers\SuperAdmin\SuperAdminCashpointController::class, 'storeProvider'])->name('providers.store');
-        Route::put('/providers/{provider}', [\App\Http\Controllers\SuperAdmin\SuperAdminCashpointController::class, 'updateProvider'])->name('providers.update');
-        Route::delete('/providers/{provider}', [\App\Http\Controllers\SuperAdmin\SuperAdminCashpointController::class, 'destroyProvider'])->name('providers.destroy');
-        Route::get('/audit-logs', [\App\Http\Controllers\SuperAdmin\SuperAdminCashpointController::class, 'auditLogs'])->name('audit-logs');
+        // Providers
+        Route::get('/providers', [\App\Http\Controllers\SuperAdmin\ProviderController::class, 'index'])->name('providers.index');
+        Route::post('/providers', [\App\Http\Controllers\SuperAdmin\ProviderController::class, 'store'])->name('providers.store');
+        Route::put('/providers/{provider}', [\App\Http\Controllers\SuperAdmin\ProviderController::class, 'update'])->name('providers.update');
+        Route::delete('/providers/{provider}', [\App\Http\Controllers\SuperAdmin\ProviderController::class, 'destroy'])->name('providers.destroy');
+        Route::post('/providers/{provider}/toggle-status', [\App\Http\Controllers\SuperAdmin\ProviderController::class, 'toggleStatus'])->name('providers.toggle-status');
+
+        // Fee Rules
+        Route::get('/fee-rules', [\App\Http\Controllers\SuperAdmin\FeeRuleController::class, 'index'])->name('fee-rules.index');
+        Route::post('/fee-rules', [\App\Http\Controllers\SuperAdmin\FeeRuleController::class, 'store'])->name('fee-rules.store');
+        Route::put('/fee-rules/{feeRule}', [\App\Http\Controllers\SuperAdmin\FeeRuleController::class, 'update'])->name('fee-rules.update');
+        Route::delete('/fee-rules/{feeRule}', [\App\Http\Controllers\SuperAdmin\FeeRuleController::class, 'destroy'])->name('fee-rules.destroy');
+
+        // Commission Rules
+        Route::get('/commission-rules', [\App\Http\Controllers\SuperAdmin\CommissionRuleController::class, 'index'])->name('commission-rules.index');
+        Route::post('/commission-rules', [\App\Http\Controllers\SuperAdmin\CommissionRuleController::class, 'store'])->name('commission-rules.store');
+        Route::put('/commission-rules/{commissionRule}', [\App\Http\Controllers\SuperAdmin\CommissionRuleController::class, 'update'])->name('commission-rules.update');
+        Route::delete('/commission-rules/{commissionRule}', [\App\Http\Controllers\SuperAdmin\CommissionRuleController::class, 'destroy'])->name('commission-rules.destroy');
+
+        // Cash Point Management
+        Route::get('/management', [\App\Http\Controllers\SuperAdmin\CashPointManagementController::class, 'index'])->name('management.index');
+        Route::post('/management/cash-points', [\App\Http\Controllers\SuperAdmin\CashPointManagementController::class, 'storeCashPoint'])->name('management.cash-points.store');
+        Route::put('/management/cash-points/{cashPoint}', [\App\Http\Controllers\SuperAdmin\CashPointManagementController::class, 'updateCashPoint'])->name('management.cash-points.update');
+        Route::delete('/management/cash-points/{cashPoint}', [\App\Http\Controllers\SuperAdmin\CashPointManagementController::class, 'destroyCashPoint'])->name('management.cash-points.destroy');
+        Route::post('/management/assign-staff', [\App\Http\Controllers\SuperAdmin\CashPointManagementController::class, 'assignStaff'])->name('management.assign-staff');
+        Route::post('/management/assignments/{assignment}/end', [\App\Http\Controllers\SuperAdmin\CashPointManagementController::class, 'endAssignment'])->name('management.assignments.end');
+
+        // Unlock records
+        Route::post('/openings/{opening}/unlock', [\App\Http\Controllers\SuperAdmin\CashPointManagementController::class, 'unlockOpening'])->name('openings.unlock');
+        Route::post('/closings/{closing}/unlock', [\App\Http\Controllers\SuperAdmin\CashPointManagementController::class, 'unlockClosing'])->name('closings.unlock');
+
+        // Reports
+        Route::get('/reports', [\App\Http\Controllers\SuperAdmin\CashPointManagementController::class, 'reports'])->name('reports.index');
     });
 
     // Services Management

@@ -83,6 +83,10 @@
                 'title' => 'Edit Income Record',
                 'subtitle' => 'Update the details of this income record.',
             ],
+            request()->is('staff*') => [
+                'title' => 'Staff Panel',
+                'subtitle' => 'Manage your assigned tasks and activities from this workspace.',
+            ],
             default => [
                 'title' => 'User Panel',
                 'subtitle' => 'Manage your activities from this workspace.',

@@ -63,21 +63,16 @@
         </a>
     </li>
     <li class="nav-item has-submenu">
-        <a href="#" class="nav-link nav-link-toggle {{ request()->routeIs('admin.cash-points.*') || request()->routeIs('admin.cashpoint.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#adminCashpointSubmenu" aria-expanded="{{ request()->routeIs('admin.cash-points.*') || request()->routeIs('admin.cashpoint.*') ? 'true' : 'false' }}">
+        <a href="#" class="nav-link nav-link-toggle {{ request()->routeIs('admin.cashpoint*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#adminCashpointSubmenu" aria-expanded="{{ request()->routeIs('admin.cashpoint*') ? 'true' : 'false' }}">
             <i class="bi bi-cash-stack"></i>
             <span class="nav-text">Cash Point</span>
             <i class="bi bi-chevron-down submenu-arrow ms-auto"></i>
         </a>
-        <div class="collapse submenu-collapse {{ request()->routeIs('admin.cash-points.*') || request()->routeIs('admin.cashpoint.*') ? 'show' : '' }}" id="adminCashpointSubmenu">
+        <div class="collapse submenu-collapse {{ request()->routeIs('admin.cashpoint*') ? 'show' : '' }}" id="adminCashpointSubmenu">
             <ul class="nav flex-column submenu-nav">
                 <li class="nav-item">
-                    <a href="{{ route('admin.cashpoint.index') }}" class="nav-link submenu-link {{ request()->routeIs('admin.cashpoint.index') ? 'active' : '' }}">
-                        <span class="nav-text submenu-text">Staff Sessions</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.cashpoint.all-sessions') }}" class="nav-link submenu-link {{ request()->routeIs('admin.cashpoint.all-sessions') ? 'active' : '' }}">
-                        <span class="nav-text submenu-text">All Sessions</span>
+                    <a href="{{ route('admin.cashpoint.index') }}" class="nav-link submenu-link {{ request()->routeIs('admin.cashpoint.index') || request()->routeIs('admin.cashpoint.openings*') ? 'active' : '' }}">
+                        <span class="nav-text submenu-text">Opening Balances</span>
                     </a>
                 </li>
             </ul>

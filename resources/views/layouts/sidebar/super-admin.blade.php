@@ -33,31 +33,36 @@
 </div>
 <ul class="nav flex-column">
     <li class="nav-item has-submenu">
-        <a href="#" class="nav-link nav-link-toggle {{ request()->routeIs('super-admin.cash-points.*') || request()->routeIs('super-admin.cashpoint.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#superAdminCashpointSubmenu" aria-expanded="{{ request()->routeIs('super-admin.cash-points.*') || request()->routeIs('super-admin.cashpoint.*') ? 'true' : 'false' }}">
+        <a href="#" class="nav-link nav-link-toggle {{ request()->routeIs('super-admin.cashpoint.*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#superAdminCashpointSubmenu" aria-expanded="{{ request()->routeIs('super-admin.cashpoint.*') ? 'true' : 'false' }}">
             <i class="bi bi-cash-stack"></i>
             <span class="nav-text">Cash Point</span>
             <i class="bi bi-chevron-down submenu-arrow ms-auto"></i>
         </a>
-        <div class="collapse submenu-collapse {{ request()->routeIs('super-admin.cash-points.*') || request()->routeIs('super-admin.cashpoint.*') ? 'show' : '' }}" id="superAdminCashpointSubmenu">
+        <div class="collapse submenu-collapse {{ request()->routeIs('super-admin.cashpoint.*') ? 'show' : '' }}" id="superAdminCashpointSubmenu">
             <ul class="nav flex-column submenu-nav">
                 <li class="nav-item">
-                    <a href="{{ route('super-admin.cashpoint.dashboard') }}" class="nav-link submenu-link {{ request()->routeIs('super-admin.cashpoint.dashboard') ? 'active' : '' }}">
-                        <span class="nav-text submenu-text">Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('super-admin.cashpoint.sessions') }}" class="nav-link submenu-link {{ request()->routeIs('super-admin.cashpoint.sessions') ? 'active' : '' }}">
-                        <span class="nav-text submenu-text">All Sessions</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('super-admin.cashpoint.providers') }}" class="nav-link submenu-link {{ request()->routeIs('super-admin.cashpoint.providers*') ? 'active' : '' }}">
+                    <a href="{{ route('super-admin.cashpoint.providers.index') }}" class="nav-link submenu-link {{ request()->routeIs('super-admin.cashpoint.providers*') ? 'active' : '' }}">
                         <span class="nav-text submenu-text">Providers</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('super-admin.cashpoint.audit-logs') }}" class="nav-link submenu-link {{ request()->routeIs('super-admin.cashpoint.audit-logs') ? 'active' : '' }}">
-                        <span class="nav-text submenu-text">Audit Logs</span>
+                    <a href="{{ route('super-admin.cashpoint.fee-rules.index') }}" class="nav-link submenu-link {{ request()->routeIs('super-admin.cashpoint.fee-rules*') ? 'active' : '' }}">
+                        <span class="nav-text submenu-text">Fee Rules</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('super-admin.cashpoint.commission-rules.index') }}" class="nav-link submenu-link {{ request()->routeIs('super-admin.cashpoint.commission-rules*') ? 'active' : '' }}">
+                        <span class="nav-text submenu-text">Commission Rules</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('super-admin.cashpoint.management.index') }}" class="nav-link submenu-link {{ request()->routeIs('super-admin.cashpoint.management*') ? 'active' : '' }}">
+                        <span class="nav-text submenu-text">Cash Points</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('super-admin.cashpoint.reports.index') }}" class="nav-link submenu-link {{ request()->routeIs('super-admin.cashpoint.reports*') ? 'active' : '' }}">
+                        <span class="nav-text submenu-text">Profit Reports</span>
                     </a>
                 </li>
             </ul>

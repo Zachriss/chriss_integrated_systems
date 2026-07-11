@@ -98,11 +98,31 @@
             <span class="nav-text">Income History</span>
         </a>
     </li>
-    <li class="nav-item">
-        <a href="{{ route('staff.cashpoint.dashboard') }}" class="nav-link {{ request()->routeIs('staff.cashpoint*') ? 'active' : '' }}">
+    <li class="nav-item has-submenu">
+        <a href="#" class="nav-link nav-link-toggle {{ request()->routeIs('staff.cashpoint*') ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#staffCashpointSubmenu" aria-expanded="{{ request()->routeIs('staff.cashpoint*') ? 'true' : 'false' }}">
             <i class="bi bi-cash-stack"></i>
             <span class="nav-text">Cash Point</span>
+            <i class="bi bi-chevron-down submenu-arrow ms-auto"></i>
         </a>
+        <div class="collapse submenu-collapse {{ request()->routeIs('staff.cashpoint*') ? 'show' : '' }}" id="staffCashpointSubmenu">
+            <ul class="nav flex-column submenu-nav">
+                <li class="nav-item">
+                    <a href="{{ route('staff.cashpoint.dashboard') }}" class="nav-link submenu-link {{ request()->routeIs('staff.cashpoint.dashboard') ? 'active' : '' }}">
+                        <span class="nav-text submenu-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('staff.cashpoint.history') }}" class="nav-link submenu-link {{ request()->routeIs('staff.cashpoint.history') ? 'active' : '' }}">
+                        <span class="nav-text submenu-text">Transaction History</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('staff.cashpoint.closing.create') }}" class="nav-link submenu-link {{ request()->routeIs('staff.cashpoint.closing.create') ? 'active' : '' }}">
+                        <span class="nav-text submenu-text">End of Day Closing</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </li>
 </ul>
 

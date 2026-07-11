@@ -7,72 +7,51 @@ use Illuminate\Database\Eloquent\Model;
 class CashPoint extends Model
 {
     protected $fillable = [
+        'name',
+        'status',
         'admin_id',
         'date',
-        'opening_mpesa',
-        'opening_airtel',
-        'opening_tigo',
-        'opening_halo',
-        'opening_cash',
-        'closing_mpesa',
-        'closing_airtel',
-        'closing_tigo',
-        'closing_halo',
-        'closing_cash',
-        'notes',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'date' => 'date',
-            'opening_mpesa' => 'decimal:2',
-            'opening_airtel' => 'decimal:2',
-            'opening_tigo' => 'decimal:2',
-            'opening_halo' => 'decimal:2',
-            'opening_cash' => 'decimal:2',
-            'closing_mpesa' => 'decimal:2',
-            'closing_airtel' => 'decimal:2',
-            'closing_tigo' => 'decimal:2',
-            'closing_halo' => 'decimal:2',
-            'closing_cash' => 'decimal:2',
-        ];
-    }
+    protected $casts = [
+        'status' => 'string',
+        'date' => 'date',
+    ];
 
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
 
-    public function transactions()
-    {
-        return $this->hasMany(CashTransaction::class);
-    }
-
-    public function openings()
+    public function cashOpenings()
     {
         return $this->hasMany(CashOpening::class);
     }
 
-    public function closings()
+    public function transactions()
+    {
+        return $this->hasMany(CashTransaction::class, 'cash_point_id');
+    }
+
+    public function cashTransactions()
+    {
+        return $this->hasMany(CashTransaction::class);
+    }
+
+    public function cashClosings()
     {
         return $this->hasMany(CashClosing::class);
     }
 
-    public function getTotalOpeningAttribute(): float
+    public function staffAssignments()
     {
-        return $this->opening_mpesa + $this->opening_airtel + $this->opening_tigo + $this->opening_halo + $this->opening_cash;
+        return $this->hasMany(StaffCashAssignment::class);
     }
 
-    public function getTotalClosingAttribute(): float
+    public function assignedStaff()
     {
-        return $this->closing_mpesa + $this->closing_airtel + $this->closing_tigo + $this->closing_halo + $this->closing_cash;
-    }
-
-    public function getCalculatedClosingAttribute(): float
-    {
-        $income = $this->transactions()->where('type', 'income')->sum('amount');
-        $expenses = $this->transactions()->where('type', 'expense')->sum('amount');
-        return $this->getTotalOpeningAttribute() + $income - $expenses;
+        return $this->belongsToMany(User::class, 'staff_cash_assignments', 'cash_point_id', 'staff_id')
+            ->withPivot('status', 'start_date', 'end_date')
+            ->wherePivot('status', 'active');
     }
 }

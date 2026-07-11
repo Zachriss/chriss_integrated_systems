@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\AdminExpenseController;
 use App\Http\Controllers\Admin\AdminFinanceController;
 use App\Http\Controllers\Admin\AdminStaffReportController;
 use App\Http\Controllers\Admin\AdminStaffTaskController;
-use App\Http\Controllers\Admin\CashPointController;
+use App\Http\Controllers\Admin\CashOpeningController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\AdminServiceRequestController;
 use App\Http\Controllers\Admin\ReportsController;
@@ -18,26 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-    Route::prefix('cash-points')->name('cash-points.')->group(function () {
-        Route::get('/', [CashPointController::class, 'index'])->name('index');
-        Route::get('/create', [CashPointController::class, 'create'])->name('create');
-        Route::post('/', [CashPointController::class, 'store'])->name('store');
-        Route::get('/{cashPoint}', [CashPointController::class, 'show'])->name('show');
-        Route::delete('/{cashPoint}', [CashPointController::class, 'destroy'])->name('destroy');
-        Route::post('/{cashPoint}/openings', [CashPointController::class, 'setOpening'])->name('set-opening');
-        Route::post('/{cashPoint}/transactions', [CashPointController::class, 'addTransaction'])->name('add-transaction');
-        Route::post('/{cashPoint}/closings', [CashPointController::class, 'setClosing'])->name('set-closing');
-    });
-
-    // New Cash Point Module
+    // Cash Point - New Module (Admin manages openings, views transactions & closings)
     Route::prefix('cashpoint')->name('cashpoint.')->group(function () {
-        Route::get('/', [\App\Http\Controllers\Admin\AdminCashpointSessionController::class, 'index'])->name('index');
-        Route::get('/all-sessions', [\App\Http\Controllers\Admin\AdminCashpointSessionController::class, 'allSessions'])->name('all-sessions');
-        Route::get('/staff/{staff}/sessions', [\App\Http\Controllers\Admin\AdminCashpointSessionController::class, 'staffSessions'])->name('staff-sessions');
-        Route::get('/sessions/{session}', [\App\Http\Controllers\Admin\AdminCashpointSessionController::class, 'show'])->name('sessions.show');
-        Route::post('/sessions/{session}/reopen', [\App\Http\Controllers\Admin\AdminCashpointSessionController::class, 'reopenSession'])->name('sessions.reopen');
-        Route::post('/staff/{staff}/reset', [\App\Http\Controllers\Admin\AdminCashpointSessionController::class, 'resetBalances'])->name('staff.reset');
-        Route::get('/sessions-data', [\App\Http\Controllers\Admin\AdminCashpointSessionController::class, 'getSessionsData'])->name('sessions.data');
+        Route::get('/', [CashOpeningController::class, 'index'])->name('index');
+        Route::post('/openings', [CashOpeningController::class, 'store'])->name('openings.store');
+        Route::post('/openings/{opening}/lock', [CashOpeningController::class, 'lock'])->name('openings.lock');
+        Route::post('/openings/{opening}/unlock', [CashOpeningController::class, 'unlock'])->name('openings.unlock');
+        Route::get('/all-sessions', [CashOpeningController::class, 'index'])->name('all-sessions');
     });
 
     Route::prefix('service-requests')->name('service-requests.')->group(function () {

@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class CashOpening extends Model
 {
     protected $fillable = [
-        'cash_point_id', 'payment_channel_id', 'opening_balance',
-        'opening_date', 'created_by', 'is_locked',
+        'cash_point_id',
+        'provider_id',
+        'opening_balance',
+        'opening_date',
+        'is_locked',
+        'created_by',
     ];
 
     protected $casts = [
@@ -22,13 +26,23 @@ class CashOpening extends Model
         return $this->belongsTo(CashPoint::class);
     }
 
-    public function paymentChannel()
+    public function provider()
     {
-        return $this->belongsTo(PaymentChannel::class);
+        return $this->belongsTo(Provider::class);
     }
 
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function scopeLocked($query)
+    {
+        return $query->where('is_locked', true);
+    }
+
+    public function scopeForDate($query, $date)
+    {
+        return $query->where('opening_date', $date);
     }
 }

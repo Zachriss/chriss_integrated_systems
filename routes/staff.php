@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\Staff\StaffCashPointController;
 use App\Http\Controllers\Staff\StaffDashboardController;
 use App\Http\Controllers\Staff\StaffIncomeController;
 use App\Http\Controllers\Staff\StaffInventoryController;
 use App\Http\Controllers\Staff\StaffServiceController;
 use App\Http\Controllers\Staff\StaffTaskAssignmentController;
 use App\Http\Controllers\Staff\StaffTaskController;
+use App\Http\Controllers\Staff\CashTransactionController;
+use App\Http\Controllers\Staff\StaffCashClosingController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->group(function () {
@@ -49,18 +50,15 @@ Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->grou
     Route::get('/inventory', [StaffInventoryController::class, 'index'])->name('inventory');
     Route::post('/inventory/{product}/stock-out', [StaffInventoryController::class, 'stockOut'])->name('inventory.stock-out');
 
-    // Cash Point - New Module
+    // Cash Point - Read Only Dashboard + Closing
     Route::prefix('cashpoint')->name('cashpoint.')->group(function () {
-        Route::get('/', [\App\Http\Controllers\Staff\CashpointSessionController::class, 'index'])->name('dashboard');
-        Route::post('/opening', [\App\Http\Controllers\Staff\CashpointSessionController::class, 'storeOpening'])->name('opening.store');
-        Route::post('/closing', [\App\Http\Controllers\Staff\CashpointSessionController::class, 'storeClosing'])->name('closing.store');
-        Route::get('/session/{session}', [\App\Http\Controllers\Staff\CashpointSessionController::class, 'showSession'])->name('session.show');
-        Route::get('/data', [\App\Http\Controllers\Staff\CashpointSessionController::class, 'getSessionData'])->name('data');
-        Route::get('/history', [\App\Http\Controllers\Staff\CashpointSessionController::class, 'history'])->name('history');
-    });
+        // READ-ONLY: View today's balances
+        Route::get('/', [CashTransactionController::class, 'dashboard'])->name('dashboard');
+        // READ-ONLY: View transaction history from database
+        Route::get('/history', [CashTransactionController::class, 'history'])->name('history');
 
-    // Keep old route for backward compatibility
-    Route::get('/cash-point', [StaffCashPointController::class, 'index'])->name('cash-point');
-    Route::post('/cash-point/opening', [StaffCashPointController::class, 'setOpening'])->name('cash-point.opening');
-    Route::post('/cash-point/closing', [StaffCashPointController::class, 'setClosing'])->name('cash-point.closing');
+        // Dedicated Closing Routes (END OF DAY ONLY - no transactions)
+        Route::get('/closing', [StaffCashClosingController::class, 'create'])->name('closing.create');
+        Route::post('/closing', [StaffCashClosingController::class, 'store'])->name('closing.store');
+    });
 });

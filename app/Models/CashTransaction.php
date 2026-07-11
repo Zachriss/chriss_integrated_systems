@@ -7,23 +7,34 @@ use Illuminate\Database\Eloquent\Model;
 class CashTransaction extends Model
 {
     protected $fillable = [
-        'cash_point_id', 'staff_id', 'customer_id', 'from_channel_id', 'to_channel_id',
-        'payment_channel_id', 'type', 'payment_method', 'transaction_type',
-        'description', 'amount', 'reference', 'reference_number',
-        'created_by', 'transaction_date',
+        'cash_point_id',
+        'provider_id',
+        'staff_id',
+        'transaction_type',
+        'amount',
+        'fee',
+        'agent_commission',
+        'system_commission',
+        'reference_number',
+        'transaction_date',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'amount' => 'decimal:2',
-            'transaction_date' => 'date',
-        ];
-    }
+    protected $casts = [
+        'amount' => 'decimal:2',
+        'fee' => 'decimal:2',
+        'agent_commission' => 'decimal:2',
+        'system_commission' => 'decimal:2',
+        'transaction_date' => 'date',
+    ];
 
     public function cashPoint()
     {
         return $this->belongsTo(CashPoint::class);
+    }
+
+    public function provider()
+    {
+        return $this->belongsTo(Provider::class);
     }
 
     public function staff()
@@ -31,23 +42,23 @@ class CashTransaction extends Model
         return $this->belongsTo(User::class, 'staff_id');
     }
 
-    public function createdBy()
+    public function scopeForDate($query, $date)
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $query->where('transaction_date', $date);
     }
 
-    public function paymentChannel()
+    public function scopeForProvider($query, $providerId)
     {
-        return $this->belongsTo(PaymentChannel::class, 'payment_channel_id');
+        return $query->where('provider_id', $providerId);
     }
 
-    public function fromChannel()
+    public function scopeDeposits($query)
     {
-        return $this->belongsTo(PaymentChannel::class, 'from_channel_id');
+        return $query->where('transaction_type', 'deposit');
     }
 
-    public function toChannel()
+    public function scopeWithdrawals($query)
     {
-        return $this->belongsTo(PaymentChannel::class, 'to_channel_id');
+        return $query->where('transaction_type', 'withdraw');
     }
 }

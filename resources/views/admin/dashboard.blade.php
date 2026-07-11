@@ -191,9 +191,9 @@
                     <div class="col-6"><span>Airtel:</span> <strong>TZS {{ number_format($todayCashPoint->closing_airtel, 2) }}</strong></div>
                     <div class="col-12"><span>Cash:</span> <strong>TZS {{ number_format($todayCashPoint->closing_cash, 2) }}</strong></div></div>
                 </div>
-            </div><a href="{{ route('admin.cash-points.show', $todayCashPoint->id) }}" class="btn btn-primary btn-sm"><i class="bi bi-cash-coin me-1"></i> Manage</a></div></div>
+            </div><a href="{{ route('admin.cashpoint.index') }}" class="btn btn-primary btn-sm"><i class="bi bi-cash-coin me-1"></i> Manage</a></div></div>
             @else
-            <div class="card border-0 shadow-sm"><div class="card-body text-center py-4"><i class="bi bi-cash-stack text-muted" style="font-size:3rem;"></i><h5>No Cash Point Today</h5><a href="{{ route('admin.cash-points.create') }}" class="btn btn-primary btn-sm">Record Opening</a></div></div>
+            <div class="card border-0 shadow-sm"><div class="card-body text-center py-4"><i class="bi bi-cash-stack text-muted" style="font-size:3rem;"></i><h5>No Cash Point Today</h5><a href="{{ route('admin.cashpoint.index') }}" class="btn btn-primary btn-sm">Record Opening</a></div></div>
             @endif
         </div>
         <div class="col-md-6">
@@ -209,7 +209,7 @@
     {{-- QUICK ACTIONS --}}
     <div class="card border-0 shadow-sm mt-4"><div class="card-header bg-white py-3"><h5 class="mb-0">Quick Actions</h5></div>
     <div class="card-body"><div class="row g-3">
-        <div class="col-md-2"><a href="{{ route('admin.cash-points.create') }}" class="btn btn-outline-primary w-100 py-3"><i class="bi bi-cash-stack d-block fs-4 mb-1"></i>Cash Point</a></div>
+        <div class="col-md-2"><a href="{{ route('admin.cashpoint.index') }}" class="btn btn-outline-primary w-100 py-3"><i class="bi bi-cash-stack d-block fs-4 mb-1"></i>Cash Point</a></div>
         <div class="col-md-2"><a href="{{ route('admin.staff-tasks.create') }}" class="btn btn-outline-success w-100 py-3"><i class="bi bi-person-plus d-block fs-4 mb-1"></i>Assign Task</a></div>
         <div class="col-md-2"><a href="{{ route('admin.expenses.index') }}" class="btn btn-outline-danger w-100 py-3"><i class="bi bi-cart-dash d-block fs-4 mb-1"></i>Expenses</a></div>
         <div class="col-md-2"><a href="{{ route('admin.services.index') }}" class="btn btn-outline-info w-100 py-3"><i class="bi bi-gear d-block fs-4 mb-1"></i>Services</a></div>
