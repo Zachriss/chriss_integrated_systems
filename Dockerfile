@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    ca-certificates \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
         zip \
@@ -41,5 +42,5 @@ RUN chmod -R 775 storage bootstrap/cache
 # Render uses port 10000
 EXPOSE 10000
 
-# Start Laravel
-CMD php artisan serve --host=0.0.0.0 --port=10000
+# Start Laravel - clear any stale config cache then serve
+CMD php artisan config:clear && php artisan serve --host=0.0.0.0 --port=10000
