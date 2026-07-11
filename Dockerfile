@@ -45,5 +45,5 @@ RUN chmod -R 775 storage bootstrap/cache
 # Render uses port 10000
 EXPOSE 10000
 
-# Start Laravel - clear any stale config cache then serve
-CMD php artisan config:clear && php artisan serve --host=0.0.0.0 --port=10000
+# Start Laravel - clear any stale config cache, generate key if not set, then serve
+CMD php artisan config:clear && php artisan key:generate --force --no-interaction && php artisan serve --host=0.0.0.0 --port=10000
