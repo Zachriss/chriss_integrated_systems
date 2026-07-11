@@ -33,8 +33,8 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Remove .env file - Render injects env vars at runtime
-RUN rm -f .env
+# Generate APP_KEY during build
+RUN php artisan key:generate --force --no-interaction
 
 # Install frontend dependencies and build assets
 RUN npm install
@@ -46,5 +46,5 @@ RUN chmod -R 775 storage bootstrap/cache
 # Render uses port 10000
 EXPOSE 10000
 
-# Start Laravel - clear any stale config cache, generate key if not set, then serve
-CMD php artisan config:clear && php artisan key:generate --force --no-interaction && php artisan serve --host=0.0.0.0 --port=10000
+# Start Laravel - clear stale config, then serve
+CMD php artisan config:clear && php artisan serve --host=0.0.0.0 --port=10000
