@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title', $system_settings->system_name ?? 'Chriss Integrated Systems')</title>
-    <link rel="icon" type="image/png" href="{{ $system_settings && $system_settings->system_logo ? asset('storage/' . $system_settings->system_logo) : asset('img/logo.svg') }}">
+    <link rel="icon" type="image/png" href="{{ $system_settings && $system_settings->system_favicon ? asset('storage/' . $system_settings->system_favicon) : asset('img/logo.svg') }}">
     <link rel="alternate icon" type="image/svg+xml" href="{{ asset('img/logo.svg') }}">
 
     <!-- Bootstrap 5 CSS -->

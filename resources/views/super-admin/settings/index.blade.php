@@ -76,10 +76,20 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Favicon</label>
-                            <input type="file" name="system_favicon" class="form-control" accept="image/*">
+                            <input type="file" name="system_favicon" class="form-control" accept="image/png,image/jpeg,image/svg+xml,image/x-icon,image/vnd.microsoft.icon" onchange="previewFavicon(event)">
                             @if($settings->system_favicon) 
-                                <div class="mt-2"><img src="{{ asset('storage/' . $settings->system_favicon) }}" style="height:32px;border-radius:4px;" alt="Favicon preview"></div>
+                                <div class="mt-2" id="currentFaviconPreview">
+                                    <img src="{{ asset('storage/' . $settings->system_favicon) }}" style="height:32px;width:32px;border-radius:4px;object-fit:cover;" alt="Favicon preview">
+                                </div>
+                            @else
+                                <div class="mt-2" id="currentFaviconPreview" style="display:none;"></div>
                             @endif
+                            <div class="mt-2" id="newFaviconPreview" style="display:none;">
+                                <div class="d-flex align-items-center gap-2">
+                                    <img id="faviconPreviewImg" src="#" style="height:32px;width:32px;border-radius:4px;object-fit:cover;" alt="New favicon preview">
+                                    <small class="text-success">New favicon selected</small>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Login Background</label>
@@ -279,6 +289,28 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+function previewFavicon(event) {
+    const file = event.target.files[0];
+    if (!file) {
+        document.getElementById('newFaviconPreview').style.display = 'none';
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('faviconPreviewImg').src = e.target.result;
+        document.getElementById('newFaviconPreview').style.display = 'block';
+        const currentPreview = document.getElementById('currentFaviconPreview');
+        if (currentPreview) {
+            currentPreview.style.display = 'none';
+        }
+    };
+    reader.readAsDataURL(file);
+}
+</script>
+@endpush
 
 @push('styles')
 <style>
