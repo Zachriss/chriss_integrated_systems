@@ -5,6 +5,9 @@ WORKDIR /var/www/html
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
+    curl \
+    nodejs \
+    npm \
     libzip-dev \
     && docker-php-ext-install zip pdo pdo_mysql
 
@@ -14,7 +17,9 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan config:cache
+RUN npm install && npm run build
+
+RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 10000
 
