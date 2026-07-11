@@ -2,6 +2,7 @@ FROM php:8.3-cli
 
 WORKDIR /var/www/html
 
+# Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -9,18 +10,36 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     npm \
     libzip-dev \
-    && docker-php-ext-install zip pdo pdo_mysql
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
+        zip \
+        pdo \
+        pdo_mysql \
+        gd \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
+# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Copy Laravel project
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-RUN npm install && npm run build
+# Install frontend dependencies and build assets
+RUN npm install
+RUN npm run build
 
+# Laravel writable folders
 RUN chmod -R 775 storage bootstrap/cache
 
+# Render uses port 10000
 EXPOSE 10000
 
+# Start Laravel
 CMD php artisan serve --host=0.0.0.0 --port=10000
