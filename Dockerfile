@@ -40,6 +40,9 @@ RUN php artisan key:generate --force --no-interaction
 RUN npm install
 RUN npm run build
 
+# Append Aiven CA certificate to system bundle so SSL connection works
+RUN cat storage/certs/aiven-ca.pem >> /etc/ssl/certs/ca-certificates.crt
+
 # Laravel writable folders
 RUN chmod -R 775 storage bootstrap/cache
 
